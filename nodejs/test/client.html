@@ -1,0 +1,30 @@
+<html>
+  <head></head>
+  <body>
+    <input id="message" type="text">
+    <input type="submit" id="send" value="send">
+    <div id="output"></div>
+    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      (function() {
+        var socket = io.connect('ws://localhost:8081');
+
+        // 送信
+        socket.on('connect', function() {
+          $('#send').click(function() {
+            var msg = $('#message').val();
+            socket.emit('msg', msg);
+          });
+        });
+
+        // 受信
+        socket.on('othermessage', function(msg) {
+            console.log(msg);
+            $("#output").append(msg+'<br>');
+        });
+          
+      })();
+    </script>
+  </body>
+</html>
